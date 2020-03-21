@@ -6,20 +6,6 @@ import hashlib
 import click
 
 def forge_link(resource, client_remote_addr, secret, host, expire_epoch):
-    # Set variables to forge link
-    old_resource = b'/s/LuaJIT-2.0.5.tar.gz'
-    old_client_remote_addr = b'172.17.0.1'
-
-    old_host = b'http://localhost:8080'
-
-    # You should keep this secret... well... secret!
-    old_secret = b'AM1ghtyS3cr3t!'
-
-    # Generate expire timestamp
-    now = datetime.utcnow()
-    expire_dt = now + timedelta(hours=1)
-    old_expire_epoch = str.encode(expire_dt.strftime('%s'))
-
     # md5 hash the string
     uncoded = expire_epoch + resource + client_remote_addr + ' '.encode() +secret
     md5hashed = hashlib.md5(uncoded).digest()
