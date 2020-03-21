@@ -4,7 +4,7 @@ Serve files securely from an S3 bucket with expiring links and other restriction
 ## WIP list
 
 - Be able to use Private S3 buckets
-- Be able to change the /s and /s/cached URIs
+- Be able to change the `/s` and `/s/cached` URIs
 - Improve docs
 - Allow links to be created without client IP restriction
 - Allow links to be created without time expiration
