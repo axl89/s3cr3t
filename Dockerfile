@@ -26,6 +26,7 @@ ARG BUCKET_REGION=us-east-1
 
 ## NGINX
 COPY nginx-site-example.conf /etc/nginx/conf.d/default.conf
+COPY secret-site.conf /usr/local/openresty/nginx/conf/secret-site.conf
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 
 ## Openresty

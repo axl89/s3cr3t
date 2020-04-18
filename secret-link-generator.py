@@ -22,9 +22,12 @@ from base64 import b64encode
 import hashlib
 import click
 
-def forge_link(resource, client_remote_addr, secret, host, expire_epoch):
+def forge_link(resource, secret, host, expire_epoch, client_remote_addr = None):
     # md5 hash the string
-    uncoded = expire_epoch + resource + client_remote_addr + ' '.encode() +secret
+    if client_remote_addr:
+        uncoded = expire_epoch + resource + client_remote_addr + ' '.encode() + secret
+    else:
+        uncoded = expire_epoch + resource + ' '.encode() + secret
     md5hashed = hashlib.md5(uncoded).digest()
 
     # Base64 encode and transform the string
@@ -53,7 +56,7 @@ def get_expiration_default_value():
 
 @click.command()
 @click.option('--path', '-p', required=True, type=click.STRING, help='Full path to the S3 object')
-@click.option('--remote_address', '-r', required=True, type=click.STRING, help='IP address of the client')
+@click.option('--remote_address', '-r', required=False, type=click.STRING, help='IP address of the client')
 @click.option('--host_url', '-h', required=True, type=click.STRING, help='Full URL of the reverse proxy')
 @click.option('--secret', '-s', required=True, prompt=True, hide_input=True, confirmation_prompt=True, type=click.STRING, help='Secret configured in NGINX')
 @click.option('--expiration_timestamp', '-e', default=get_expiration_default_value(), type=click.STRING, help=' Link\'s expiration timestamp', show_default=True)
@@ -64,7 +67,11 @@ def generate_link(path, remote_address, host_url, secret, expiration_timestamp):
     Example:
       ./secret-link-generator.py -p /s/file.tar.gz -r 172.17.0.1 -h http://localhost:9090 -s changeme
     """
-    forge_link(path.encode(), remote_address.encode(), secret.encode(), host_url.encode(), expiration_timestamp.encode())
+    if remote_address:
+        forge_link(path.encode(), secret.encode(), host_url.encode(), expiration_timestamp.encode(), remote_address.encode())
+    else:
+        forge_link(path.encode(), secret.encode(), host_url.encode(), expiration_timestamp.encode())
+
 
 if __name__ == '__main__':
     generate_link()
