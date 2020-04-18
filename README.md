@@ -3,6 +3,8 @@ Serve files securely from an S3 bucket with expiring links and other restriction
 
 ## WIP list
 
+- NGINX security hardening.
+- Configure NGINX site with TLS.
 - Be able to change the `/s` URIs
 - Improve docs
 - Allow links to be created without client IP restriction
