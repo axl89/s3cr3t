@@ -53,6 +53,7 @@ __Warning__: If the `-e` argument is not specified, the link will have a default
 
 Will return: `http://localhost:9090/sur/oneregularfile.tar.gz?md5=Z8Dwsj1o4aTSbXHsLFeocQ&expires=1587238255`
 
+
 ### Without client IP address restriction, and expiration in 1h
 
 ```
@@ -64,7 +65,21 @@ Will return: `http://localhost:9090/sur/oneregularfile.tar.gz?md5=Z8Dwsj1o4aTSbX
 
 Will return: `http://localhost:9090/su/oneregularfile.tar.gz?md5=sUfTXNUYK3dRNm1jAdmq4A&expires=1587238234`
 
+
 ### Without expiration
+
+```
+./secret-link-generator.py \
+-f oneregularfile.tar.gz \
+-u http://localhost:9090 \
+-s CHANGEMEforducksake \
+-e never
+```
+
+Will return: `http://localhost:9090/u/oneregularfile.tar.gz?md5=isbd6KzU2e7BnzgIMpikhQ`
+
+
+### With specific expiration (i.e:31st of December at 23:59:59)
 
 ```
 ./secret-link-generator.py \
@@ -74,8 +89,4 @@ Will return: `http://localhost:9090/su/oneregularfile.tar.gz?md5=sUfTXNUYK3dRNm1
 -e 1609419599
 ```
 
-### With specific expiration (i.e:31st of December at 23:59:59)
-
-
 Will return: `http://localhost:9090/su/oneregularfile.tar.gz?md5=nUi5yQNGt5O5dkcDQQ9NXA&expires=1609419599`
-
