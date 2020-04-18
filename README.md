@@ -1,9 +1,11 @@
 # s3cr3t
-Serve files securely from an S3 bucket with expiring links and other restrictions
+Serve files securely from an S3 bucket with expiring links and other restrictions.
+
+[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFJcblx0QVtDbGllbnRdIC0tPnxHRVQgL2ZpbGUudGFyLmd6fCBCKHMzY3IzdCBzZXJ2ZXIpXG5cdEIgLS0-IEN7Q2hlY2tzfVxuXHRDIC0tPnxVUkkgbWF0Y2g_fCBEXG5cdEMgLS0-fElQIGFsbG93ZWQ_fCBEXG5cdEMgLS0-fEV4cGlyZWQ_fCBEXG4gICAgRFtmYTpmYS1jbG91ZCBQcml2YXRlIEFXUyBTMyBCdWNrZXRdXG4gICAgRC0uIFJlc3BvbnNlIC4tPiBCXG4gICAgQi0uIFJlc3BvbnNlIC4tPiBBXG5cdFx0XHRcdFx0IiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFJcblx0QVtDbGllbnRdIC0tPnxHRVQgL2ZpbGUudGFyLmd6fCBCKHMzY3IzdCBzZXJ2ZXIpXG5cdEIgLS0-IEN7Q2hlY2tzfVxuXHRDIC0tPnxVUkkgbWF0Y2g_fCBEXG5cdEMgLS0-fElQIGFsbG93ZWQ_fCBEXG5cdEMgLS0-fEV4cGlyZWQ_fCBEXG4gICAgRFtmYTpmYS1jbG91ZCBQcml2YXRlIEFXUyBTMyBCdWNrZXRdXG4gICAgRC0uIFJlc3BvbnNlIC4tPiBCXG4gICAgQi0uIFJlc3BvbnNlIC4tPiBBXG5cdFx0XHRcdFx0IiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)
 
 ## Building the image
 
-```
+```bash
  export AWS_ACCESS_KEY_ID=1234
  export AWS_SECRET_ACCESS_KEY=5678
  export SECRET=CHANGEMEforducksake
@@ -32,7 +34,7 @@ Support for Kubernetes deployment is on the way.
 
 First, install the required requisites for python3 to work.
 
-```
+```bash
 apt update && apt install python3 python3-pip -y
 pip3 install -r requirements.txt
 ```
@@ -43,7 +45,7 @@ __Warning__: If the `-e` argument is not specified, the link will have a default
 
 ### With client IP address restriction, and expiration in 1h
 
-```
+```bash
 ./secret-link-generator.py \
 -f oneregularfile.tar.gz \
 -r 172.17.0.1 \
@@ -56,7 +58,7 @@ Will return: `http://localhost:9090/sur/oneregularfile.tar.gz?md5=Z8Dwsj1o4aTSbX
 
 ### Without client IP address restriction, and expiration in 1h
 
-```
+```bash
 ./secret-link-generator.py \
 -f oneregularfile.tar.gz \
 -u http://localhost:9090 \
@@ -68,7 +70,7 @@ Will return: `http://localhost:9090/su/oneregularfile.tar.gz?md5=sUfTXNUYK3dRNm1
 
 ### Without expiration
 
-```
+```bash
 ./secret-link-generator.py \
 -f oneregularfile.tar.gz \
 -u http://localhost:9090 \
@@ -81,7 +83,7 @@ Will return: `http://localhost:9090/u/oneregularfile.tar.gz?md5=isbd6KzU2e7BnzgI
 
 ### With specific expiration (i.e:31st of December at 23:59:59)
 
-```
+```bash
 ./secret-link-generator.py \
 -f oneregularfile.tar.gz \
 -u http://localhost:9090 \
