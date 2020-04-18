@@ -1,18 +1,6 @@
 # s3cr3t
 Serve files securely from an S3 bucket with expiring links and other restrictions
 
-## WIP list
-
-- NGINX security hardening.
-- Configure NGINX site with TLS.
-- Improve docs
-- ~~Allow links to be created without client IP restriction~~
-- ~~Allow links to be created without time expiration~~
-- Limit the amount of downloads per IP address
-- ~~Be able to use Private S3 buckets~~
-
-
-
 ## Building the image
 
 ```
@@ -31,39 +19,63 @@ docker build \
 -t s3cr3t/s3cr3t-server .
 ```
 
-## Getting a link
+## Running the image
 
-### Installing prerequisites
+Just run it with Docker:
+
+`docker run --rm -it -p9090:80 s3cr3t/s3cr3t-server`
+
+Support for Kubernetes deployment is on the way.
+
+
+## How does it work
+
+First, install the required requisites for python3 to work.
 
 ```
 apt update && apt install python3 python3-pip -y
 pip3 install -r requirements.txt
 ```
 
-### Using the secret-link-generator utility
-
-
-#### With client IP address restriction
-```
-./secret-link-generator.py \
--p /s/oneregularfile.tar.gz \
--r 172.17.0.1 \
--h http://localhost:9090 \
--s CHANGEMEforducksake
-```
-
-Will return: `http://localhost:9090/s/oneregularfile.tar.gz?md5=v-qpUxhRuDeNVTdFQzTfhA&expires=1584897454`
-
-#### Without client IP address restriction
-
-```
-./secret-link-generator.py \
--p /l/oneregularfile.tar.gz \
--h http://localhost:9090 \
--s CHANGEMEforducksake
-```
-
-Will return: `http://localhost:9090/l/oneregularfile.tar.gz?md5=rFEx7UbddUs14O7bF1C0SA&expires=1587215788`
-
+Then, generate a link using the `secret-link-generator.py` utility.
 
 __Warning__: If the `-e` argument is not specified, the link will have a default duration of 1h.
+
+### With client IP address restriction, and expiration in 1h
+
+```
+./secret-link-generator.py \
+-f oneregularfile.tar.gz \
+-r 172.17.0.1 \
+-u http://localhost:9090 \
+-s CHANGEMEforducksake
+```
+
+Will return: `http://localhost:9090/sur/oneregularfile.tar.gz?md5=Z8Dwsj1o4aTSbXHsLFeocQ&expires=1587238255`
+
+### Without client IP address restriction, and expiration in 1h
+
+```
+./secret-link-generator.py \
+-f oneregularfile.tar.gz \
+-u http://localhost:9090 \
+-s CHANGEMEforducksake
+```
+
+Will return: `http://localhost:9090/su/oneregularfile.tar.gz?md5=sUfTXNUYK3dRNm1jAdmq4A&expires=1587238234`
+
+### Without expiration
+
+```
+./secret-link-generator.py \
+-f oneregularfile.tar.gz \
+-u http://localhost:9090 \
+-s CHANGEMEforducksake \
+-e 1609419599
+```
+
+### With specific expiration (i.e:31st of December at 23:59:59)
+
+
+Will return: `http://localhost:9090/su/oneregularfile.tar.gz?md5=nUi5yQNGt5O5dkcDQQ9NXA&expires=1609419599`
+
