@@ -44,6 +44,7 @@ pip3 install -r requirements.txt
 ### Using the secret-link-generator utility
 
 
+#### With client IP address restriction
 ```
 ./secret-link-generator.py \
 -p /s/oneregularfile.tar.gz \
@@ -52,8 +53,18 @@ pip3 install -r requirements.txt
 -s CHANGEMEforducksake
 ```
 
-Will return:
+Will return: `http://localhost:9090/s/oneregularfile.tar.gz?md5=v-qpUxhRuDeNVTdFQzTfhA&expires=1584897454`
 
-`http://localhost:9090/s/oneregularfile.tar.gz?md5=v-qpUxhRuDeNVTdFQzTfhA&expires=1584897454`
+#### Without client IP address restriction
+
+```
+./secret-link-generator.py \
+-p /l/oneregularfile.tar.gz \
+-h http://localhost:9090 \
+-s CHANGEMEforducksake
+```
+
+Will return: `http://localhost:9090/l/oneregularfile.tar.gz?md5=rFEx7UbddUs14O7bF1C0SA&expires=1587215788`
+
 
 __Warning__: If the `-e` argument is not specified, the link will have a default duration of 1h.
