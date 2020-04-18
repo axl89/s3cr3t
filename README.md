@@ -21,9 +21,9 @@ docker build \
 -t s3cr3t/s3cr3t-server .
 ```
 
-## Running the image
+## Running the container
 
-Just run it with Docker:
+After building the image, just run it with Docker:
 
 `docker run --rm -it -p9090:80 s3cr3t/s3cr3t-server`
 
