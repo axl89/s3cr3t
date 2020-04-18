@@ -22,12 +22,35 @@ from base64 import b64encode
 import hashlib
 import click
 
+def get_url_prefix(has_expiration,has_remote_address,has_uri_check = True):
+    prefix = '/'
+
+    if has_expiration:
+        prefix += 's'
+    if has_uri_check:
+        prefix += 'u'
+    if has_remote_address:
+        prefix += 'r'
+
+    return prefix
 def forge_link(resource, secret, host, expire_epoch, client_remote_addr = None):
-    # md5 hash the string
-    if client_remote_addr:
-        uncoded = expire_epoch + resource + client_remote_addr + ' '.encode() + secret
-    else:
-        uncoded = expire_epoch + resource + ' '.encode() + secret
+    uncoded = ''
+
+    if expire_epoch is not None:
+        uncoded += expire_epoch
+
+    prefix = get_url_prefix(expire_epoch is not None, client_remote_addr is not None)
+
+    uncoded += prefix + '/' + resource
+
+    if client_remote_addr is not None:
+        uncoded += client_remote_addr
+
+    uncoded += ' ' + secret
+
+    uncoded = uncoded.encode()
+
+    #md5 the previous information
     md5hashed = hashlib.md5(uncoded).digest()
 
     # Base64 encode and transform the string
@@ -35,13 +58,24 @@ def forge_link(resource, secret, host, expire_epoch, client_remote_addr = None):
     unpadded_b64url = b64.replace(b'+', b'-').replace(b'/', b'_').replace(b'=', b'')
 
     # Format and generate the link
-    linkformat = "{}{}?md5={}&expires={}"
-    securelink = linkformat.format(
-    host.decode(),
-    resource.decode(),
-    unpadded_b64url.decode(),
-    expire_epoch.decode()
-    )
+    if expire_epoch:
+        linkformat = "{}{}/{}?md5={}&expires={}"
+        securelink = linkformat.format(
+            host,
+            prefix,
+            resource,
+            unpadded_b64url.decode(),
+            expire_epoch
+        )
+    else:
+        linkformat = "{}{}/{}?md5={}"
+        securelink = linkformat.format(
+            host,
+            prefix,
+            resource,
+            unpadded_b64url.decode()
+        )
+
 
     # Print the link
     print(securelink)
@@ -55,22 +89,22 @@ def get_expiration_default_value():
     return str(int(expire_dt.timestamp()))
 
 @click.command()
-@click.option('--path', '-p', required=True, type=click.STRING, help='Full path to the S3 object')
-@click.option('--remote_address', '-r', required=False, type=click.STRING, help='IP address of the client')
-@click.option('--host_url', '-h', required=True, type=click.STRING, help='Full URL of the reverse proxy')
+@click.option('--file', '-f', required=True, type=click.STRING, help='Full path of the file, relative to the root of the S3 bucket')
+@click.option('--remote_address', '-r', type=click.STRING, help='IP address of the client')
+@click.option('--server_url', '-u', required=True, type=click.STRING, help='Full URL of the s3cr3t server')
 @click.option('--secret', '-s', required=True, prompt=True, hide_input=True, confirmation_prompt=True, type=click.STRING, help='Secret configured in NGINX')
 @click.option('--expiration_timestamp', '-e', default=get_expiration_default_value(), type=click.STRING, help=' Link\'s expiration timestamp', show_default=True)
-def generate_link(path, remote_address, host_url, secret, expiration_timestamp):
+def generate_link(file, remote_address, server_url, secret, expiration_timestamp):
     """
-    Generates a link that expires.
+    Generates a s3cr3t link.
 
     Example:
-      ./secret-link-generator.py -p /s/file.tar.gz -r 172.17.0.1 -h http://localhost:9090 -s changeme
+
+    ./secret-link-generator.py -f onefile.tar.gz -u http://localhost:9090 -s mysecret
     """
-    if remote_address:
-        forge_link(path.encode(), secret.encode(), host_url.encode(), expiration_timestamp.encode(), remote_address.encode())
-    else:
-        forge_link(path.encode(), secret.encode(), host_url.encode(), expiration_timestamp.encode())
+    if expiration_timestamp == 'never':
+        expiration_timestamp = None
+    forge_link(file, secret, server_url, expiration_timestamp, remote_address)
 
 
 if __name__ == '__main__':
