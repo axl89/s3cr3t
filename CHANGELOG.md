@@ -6,12 +6,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- NGINX security hardening.
-- Configure NGINX site with TLS.
-- Improve docs
-- Limit the amount of downloads per IP address
-- Design some fancy deployment files for K8S
-
 ## [0.0.1] - 2020-04-18
 ### Added
 - This beautiful Changelog file.
