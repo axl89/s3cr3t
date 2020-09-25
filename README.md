@@ -3,34 +3,18 @@ Serve files securely from an S3 bucket with expiring links and other restriction
 
 [![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFJcblx0QVtDbGllbnRdIC0tPnxHRVQgL2ZpbGUudGFyLmd6fCBCKHMzY3IzdCBzZXJ2ZXIpXG5cdEIgLS0-IEN7Q2hlY2tzfVxuXHRDIC0tPnxVUkkgbWF0Y2g_fCBEXG5cdEMgLS0-fElQIGFsbG93ZWQ_fCBEXG5cdEMgLS0-fEV4cGlyZWQ_fCBEXG4gICAgRChTMyBCdWNrZXQpXG4gICAgRC0uIFJlc3BvbnNlIC4tPiBCXG4gICAgQi0uIFJlc3BvbnNlIC4tPiBBXG5cdFx0XHRcdFx0IiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFJcblx0QVtDbGllbnRdIC0tPnxHRVQgL2ZpbGUudGFyLmd6fCBCKHMzY3IzdCBzZXJ2ZXIpXG5cdEIgLS0-IEN7Q2hlY2tzfVxuXHRDIC0tPnxVUkkgbWF0Y2g_fCBEXG5cdEMgLS0-fElQIGFsbG93ZWQ_fCBEXG5cdEMgLS0-fEV4cGlyZWQ_fCBEXG4gICAgRChTMyBCdWNrZXQpXG4gICAgRC0uIFJlc3BvbnNlIC4tPiBCXG4gICAgQi0uIFJlc3BvbnNlIC4tPiBBXG5cdFx0XHRcdFx0IiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)
 
-## Building the image
-
-```bash
- export AWS_ACCESS_KEY_ID=1234
- export AWS_SECRET_ACCESS_KEY=5678
- export SECRET=CHANGEMEforducksake
- export S3_BUCKET_NAME=your-bucket
- export BUCKET_REGION=us-east-1
-
-docker build \
---build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
---build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
---build-arg SECRET=$SECRET \
---build-arg S3_BUCKET_NAME=$S3_BUCKET_NAME \
---build-arg BUCKET_REGION=$BUCKET_REGION \
--t s3cr3t/s3cr3t-server .
-```
-
 ## Running the container
 
-After building the image, just run it with Docker:
+Modify the `env_file` first and then run it with Docker:
 
-`docker run --rm -it -p9090:80 s3cr3t/s3cr3t-server`
+```bash
+docker run --env-file=env_file --rm -it -p9090:80 s3cr3t/s3cr3t-server
+```
 
 Support for Kubernetes deployment is on the way.
 
 
-## How does it work
+## How to generate s3cr3t links
 
 First, install the required requisites for python3 to work.
 
