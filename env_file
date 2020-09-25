@@ -1,0 +1,5 @@
+S3_BUCKET_NAME=my-real-bucket
+SECRET=my-real-secret
+AWS_ACCESS_KEY_ID=my-real-aws-access-key-id
+AWS_SECRET_ACCESS_KEY=my-real-secret-access-key
+BUCKET_REGION=eu-west-1

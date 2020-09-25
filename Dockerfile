@@ -15,32 +15,18 @@
 
 FROM openresty/openresty:buster
 
-ARG S3_BUCKET_NAME=a-bucket-name
-ARG SECRET
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ARG BUCKET_REGION=us-east-1
-
-
 # Copy required files
 
 ## NGINX
 COPY nginx-site-example.conf /etc/nginx/conf.d/default.conf
 COPY secret-site.conf /usr/local/openresty/nginx/conf/secret-site.conf
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+COPY entrypoint.sh /tmp/entrypoint.sh
 
 ## Openresty
 COPY lib/aws.lua /usr/local/openresty/lualib/resty/aws.lua
 COPY lib/hmac.lua /usr/local/openresty/lualib/resty/hmac.lua
 
-
-# Perform modifications based on arguments
-
-## Site
-RUN sed -i s/your-bucket-name/$S3_BUCKET_NAME/g /etc/nginx/conf.d/default.conf
-RUN sed -i s/your-bucket-region/$BUCKET_REGION/g /etc/nginx/conf.d/default.conf
-RUN sed -i s/AM1ghtyS3cr3t\!/$SECRET/g /etc/nginx/conf.d/default.conf
-
-## NGINX global config
-RUN sed -i s/INVALID_AWS_ACCESS_KEY_ID/$AWS_ACCESS_KEY_ID/g /usr/local/openresty/nginx/conf/nginx.conf
-RUN sed -i s/INVALID_AWS_SECRET_ACCESS_KEY/$AWS_SECRET_ACCESS_KEY/g /usr/local/openresty/nginx/conf/nginx.conf
+# Entrypoint that changes NGINX config files at runtime
+# with the environment variables
+CMD ["/tmp/entrypoint.sh"]

@@ -6,11 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- NGINX security hardening.
-- Configure NGINX site with TLS.
-- Improve docs
-- Limit the amount of downloads per IP address
-- Design some fancy deployment files for K8S
+## [0.0.2] - 2020-09-25
+
+### Added
+- Integration with [Docker Hub](https://hub.docker.com/repository/docker/s3cr3t/s3cr3t-server).
+
+### Fixed
+- Avoid building secrets in the Docker image ([#10](https://github.com/axl89/s3cr3t/issues/10)).
 
 ## [0.0.1] - 2020-04-18
 ### Added
@@ -21,5 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Readme file to improve documentation and use cases.
 - Link generator utility to keep up with the changes.
 
-[Unreleased]: https://github.com/axl89/s3cr3t/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/axl89/s3cr3t/compare/v0.0.2...HEAD
+[0.0.2]: https://github.com/axl89/s3cr3t/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/axl89/s3cr3t/releases/tag/v0.0.1
