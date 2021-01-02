@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Copyright (C) 2020  Axel Amigo Arnold
+Copyright (C) 2021  Axel Amigo Arnold
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
